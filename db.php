@@ -1,9 +1,9 @@
 <?php
 
-$databaseFile = '__DIR__';
+$databaseFile = 'db/database.sqlite';
 
 try {
-    // Connect to the SQLite database using PDO
+    // Connect to the SQLite database using PDO with DSN
     $db = new PDO('sqlite:' . $databaseFile);
     
     // Enable PDO to throw exceptions on errors

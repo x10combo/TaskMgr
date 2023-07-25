@@ -1,0 +1,9 @@
+
+INSERT INTO users (username, password) VALUES ('john_doe', 'hashed_password_here');
+
+
+INSERT INTO tasks (user_id, title, description, due_date, status, priority)
+VALUES (1, 'Task 1', 'Task 1 description', '2023-07-30', 'pending', 'medium');
+
+INSERT INTO tasks (user_id, title, description, due_date, status, priority)
+VALUES (1, 'Task 2', 'Task 2 description', '2023-08-15', 'in progress', 'high');

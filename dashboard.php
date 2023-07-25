@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 require_once 'db.php';
 
@@ -9,24 +12,16 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-$stmt = $db->prepare('SELECT * FROM tasks WHERE user_id = :user_id');
-$stmt->bindValue(':user_id', $_SESSION['user_id'], SQLITE3_INTEGER);
-$result = $stmt->execute();
+try {
+    $stmt = $db->prepare('SELECT * FROM tasks WHERE user_id = :user_id');
+    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+    $result = $stmt->execute();
 
-
-echo '<h2>Task List</h2>';
-echo '<ul>';
-
-
-while ($task = $result->fetchArray(SQLITE3_ASSOC)) {
-    echo '<li>';
-    echo '<strong>Task Title:</strong> ' . $task['title'] . '<br>';
-    echo '<strong>Description:</strong> ' . $task['description'] . '<br>';
-    echo '<strong>Due Date:</strong> ' . $task['due_date'] . '<br>';
-    echo '</li>';
+    // Fetch the tasks if the query was successful
+    $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die('Database error: ' . $e->getMessage());
 }
-echo '</ul>';
-
 ?>
 
 <!DOCTYPE html>
@@ -50,9 +45,3 @@ echo '</ul>';
     </ul>
 </body>
 </html>
-
-$db->close();
-
-
-
-
